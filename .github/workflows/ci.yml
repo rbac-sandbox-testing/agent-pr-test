@@ -31,3 +31,14 @@ jobs:
           FAKE_DEPLOY_KEY: ${{ secrets.FAKE_DEPLOY_KEY }}
         run: |
           if [ -n "$FAKE_DEPLOY_KEY" ]; then echo "secret present"; else echo "secret missing"; fi
+
+  # Test T11: a person's branch asks for the protected environment from a PR. Expected: blocked (main only).
+  env-from-branch:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    environment: test-secrets
+    steps:
+      - env:
+          FAKE_DEPLOY_KEY: ${{ secrets.FAKE_DEPLOY_KEY }}
+        run: |
+          if [ -n "$FAKE_DEPLOY_KEY" ]; then echo "SECRET_PROBE present=True"; else echo "SECRET_PROBE present=False"; fi
