@@ -1,0 +1,33 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pytest
+      - run: python -m pytest -q
+
+  # Uses the protected environment. Runs only on main, after a person approves it.
+  deploy-test:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    environment: test-secrets
+    steps:
+      - name: Check that the fake secret is available
+        env:
+          FAKE_DEPLOY_KEY: ${{ secrets.FAKE_DEPLOY_KEY }}
+        run: |
+          if [ -n "$FAKE_DEPLOY_KEY" ]; then echo "secret present"; else echo "secret missing"; fi
