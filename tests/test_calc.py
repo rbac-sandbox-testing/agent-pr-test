@@ -1,12 +1,19 @@
-import pytest
+import unittest
 
-from app.calc import add, divide
-
-
-def test_add():
-    assert add(2, 3) == 5
+from app.calc import add, divide, multiply
 
 
-def test_divide_by_zero():
-    with pytest.raises(ValueError):
-        divide(1, 0)
+class TestCalc(unittest.TestCase):
+    def test_add(self):
+        self.assertEqual(add(2, 3), 5)
+
+    def test_multiply(self):
+        self.assertEqual(multiply(2, 3), 6)
+
+    def test_divide_by_zero(self):
+        with self.assertRaises(ValueError):
+            divide(1, 0)
+
+
+if __name__ == "__main__":
+    unittest.main()
