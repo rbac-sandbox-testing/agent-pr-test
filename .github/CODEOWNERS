@@ -1,2 +1,2 @@
-# #489: a code owner must approve each PR. The App (agents) is not a code owner.
-* @charlottekong-ola
+# #489: a code owner must approve each PR. The code owner is a TEAM, so the App (agents) and the PR author alone cannot satisfy it.
+* @rbac-sandbox-testing/code-owners
